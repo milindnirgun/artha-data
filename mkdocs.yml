@@ -1,0 +1,52 @@
+site_name: artha-data
+repo_url: https://github.com/milindnirgun/artha-data
+site_url: https://milindnirgun.github.io/artha-data
+site_description: This is the data collection and processing, mostly ETL scripts, to provide a financial database backend to the main artha project.
+site_author: Milind Nirgun
+edit_uri: edit/main/docs/
+repo_name: milindnirgun/artha-data
+copyright: Maintained by <a href="https://milindnirgun.com">milindnirgun</a>.
+
+nav:
+  - Home: index.md
+  - Modules: modules.md
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: ["src/artha_data"]
+theme:
+  name: material
+  feature:
+    tabs: true
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: white
+      accent: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/milindnirgun/artha-data
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/artha-data
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
