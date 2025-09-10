@@ -7,7 +7,7 @@ import duckdb
 
 # Construct a robust, absolute path to the database file.
 # This assumes the script is in 'src/artha-data' and the db is in 'data/' at the project root.
-_PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+_PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 _DB_DIR = os.path.join(_PROJECT_ROOT, "data")
 _DATAFILE_DIR = os.path.join(_PROJECT_ROOT, "datafiles")
 os.makedirs(_DB_DIR, exist_ok=True)  # Ensure the data directory exists
@@ -120,6 +120,8 @@ def load_data(con, load_date, datafile, exchange):
         load_date: The load date for the data.
         datafile: Path to the JSON data file.
         exchange: The stock exchange name.
+    Raises:
+        ValueError
     """
     json_path = datafile
 
@@ -136,9 +138,9 @@ def load_data(con, load_date, datafile, exchange):
 
         con.commit()
     except FileNotFoundError:
-        print(f"Warning: Data file not found at {json_path}. Skipping.")
+        raise ValueError(f"Warning: Data file not found at {json_path}. Skipping.")
     except json.JSONDecodeError:
-        print(f"Warning: Could not decode JSON from {json_path}. Skipping.")
+        raise ValueError(f"Warning: Could not decode JSON from {json_path}. Skipping.")
 
 
 def main():
@@ -168,14 +170,17 @@ def main():
     amex_file = _DATAFILE_DIR + "/amex/amex_full_tickers-" + load_date_str + ".json"
     nyse_file = _DATAFILE_DIR + "/nyse/nyse_full_tickers-" + load_date_str + ".json"
 
-    load_data(con, load_date_str, nasdaq_file, "NASDAQ")
+    try:
+        load_data(con, load_date_str, nasdaq_file, "NASDAQ")
 
-    load_data(con, load_date_str, amex_file, "AMEX")
+        load_data(con, load_date_str, amex_file, "AMEX")
 
-    load_data(con, load_date_str, nyse_file, "NYSE")
+        load_data(con, load_date_str, nyse_file, "NYSE")
 
-    con.close()
-    print(f"Successfully loaded data for date: {load_date_str}")
+        con.close()
+        print(f"Successfully loaded data for date: {load_date_str}")
+    except (duckdb.Error, ValueError):
+        print(f"Data load was unsuccessful for date: {load_date_str}")
 
 
 if __name__ == "__main__":

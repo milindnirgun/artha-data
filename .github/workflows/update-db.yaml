@@ -1,0 +1,25 @@
+name: Update artha database with data from the datafiles for a given date
+
+# Controls when the action will run.
+on:
+  schedule:
+    # Run at midnight UTC (4 pm PDT) Mon thru Fri
+    - cron: "30 22 * * 1-5"
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v5
+      # set the current date in environment to be used for appending to filenames in subsequent steps
+      - name: current-date
+        run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      # Run database update script
+      - name: execute-db-update
+        run: "$GITHUB_WORKSPACE/scripts/update_db.sh ${{ env.DATE }}"
