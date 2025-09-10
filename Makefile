@@ -1,6 +1,6 @@
-UV_PROJECT_ENVIRONMENT := "$(HOME)/venvs/artha"
-VENV_DIR := "$(HOME)/venvs/artha"
-OLD_EXT := ".old"
+UV_PROJECT_ENVIRONMENT := .venv
+VENV_DIR := .venv
+OLD_EXT := .old
 export VENV_DIR UV_PROJECT_ENVIRONMENT
 
 .PHONY: venv
