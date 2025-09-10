@@ -20,6 +20,33 @@ jobs:
       - name: current-date
         run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
+      # Setup Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      # Setup caching of the virtual environment directory
+      - name: Cache virtual environment
+        id: cache-venv
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: ${{ runner.os }}-venv-${{ hashFiles('**/requirements*.txt')
+          restore-keys: |
+            ${{ runner.os }}-venv-
+            ${{ runner.os }}-
+
+      # Create a virtual environment and activate it
+      - name: Create and activate virtual environment
+        run:
+          python -m venv .venv
+          echo "PATH=${GITHUB_WORKSPACE}/.venv/bin:$PATH" >> $GITHUB_ENV
+
+      # Install dependencies in the virtual environment
+      - name: Install dependencies
+        run: pip install -r requirements
+
       # Run database update script
       - name: execute-db-update
         run: "$GITHUB_WORKSPACE/scripts/update_db.sh ${{ env.DATE }}"
