@@ -51,4 +51,7 @@ jobs:
 
       # Run database update script
       - name: execute-db-update
-        run: "$GITHUB_WORKSPACE/scripts/update_db.sh ${{ env.DATE }}"
+        run: |
+          echo "Path: $PATH"
+          echo "env.PATH: ${{ env.PATH }}"
+          "$GITHUB_WORKSPACE/scripts/update_db.sh ${{ env.DATE }}"
