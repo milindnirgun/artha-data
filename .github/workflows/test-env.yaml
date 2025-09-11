@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v5
       # set the current date in environment to be used for appending to filenames in subsequent steps
       - name: current-date
-        run: echo "DATE='2025-09-10'" >> $GITHUB_ENV
+        run: echo "DATE=2025-09-10" >> $GITHUB_ENV
 
       # Setup Python
       - name: Set up Python
@@ -52,7 +52,8 @@ jobs:
       # Run database update script
       - name: execute-db-update
         run: |
-          echo "$GITHUB_WORKSPACE/scripts/update_db.sh ${{ env.DATE }}"
+          echo "${GITHUB_WORKSPACE}/scripts/update_db.sh ${{ env.DATE }}"
           echo "Path: $PATH"
           echo "env.path: ${{ env.PATH }}"
           which python
+          ${GITHUB_WORKSPACE}/scripts/update_db.sh ${{ env.DATE }}
