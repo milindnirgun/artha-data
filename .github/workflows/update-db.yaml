@@ -19,7 +19,7 @@ jobs:
       # set the current date in environment to be used for appending to filenames in subsequent steps
       - name: current-date
         #run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
-        run: echo "DATE=2025-09-10" >> $GITHUB_ENV
+        run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
       # Setup Python
       - name: Set up Python
@@ -56,4 +56,4 @@ jobs:
           echo "Path: $PATH"
           echo "env.PATH: ${{ env.PATH }}"
           which python
-          "$GITHUB_WORKSPACE/scripts/update_db.sh ${{ env.DATE }}"
+          "${GITHUB_WORKSPACE}/scripts/update_db.sh ${{ env.DATE }}"
