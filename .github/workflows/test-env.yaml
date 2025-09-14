@@ -55,7 +55,8 @@ jobs:
           echo "Github_workspace: $GITHUB_WORKSPACE"
           echo "Gitub_env: $GITHUB_ENV"
           echo "Home: $HOME"
-          ls -l $HOME/work/artha-data
+          ls -l $HOME/work/artha-data/*
+          tree -L1
           echo "$GITHUB_WORKSPACE/scripts/update_db.sh ${{ env.DATE }}"
           echo "Path: $PATH"
           echo "env.path: ${{ env.PATH }}"
