@@ -54,7 +54,7 @@ jobs:
         run: |
           echo "Github_workspace: $GITHUB_WORKSPACE"
           echo "Gitub_env: $GITHUB_ENV"
-          echo "Home: $Home"
+          echo "Home: $HOME"
           echo "$GITHUB_WORKSPACE/scripts/update_db.sh ${{ env.DATE }}"
           echo "Path: $PATH"
           echo "env.path: ${{ env.PATH }}"
