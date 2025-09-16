@@ -57,6 +57,10 @@ jobs:
           echo "Home: $HOME"
           ls -la $HOME/work/artha-data/*
           tree -L 1
+          echo "Running test script from HOME"
+          run "$HOME/scripts/test-script.sh ${{ env.DATE }}"
+          echo "Running test script from HOME/work/artha-data"
+          run "$HOME/work/artha-data/scripts/test-script.sh ${{ env.DATE }}"
           echo "$HOME/scripts/update_db.sh ${{ env.DATE }}"
           echo "Path: $PATH"
           echo "env.path: ${{ env.PATH }}"

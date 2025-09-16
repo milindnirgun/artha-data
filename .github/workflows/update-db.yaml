@@ -56,4 +56,4 @@ jobs:
           echo "Path: $PATH"
           echo "env.PATH: ${{ env.PATH }}"
           which python
-          "${HOME}/scripts/update_db.sh ${{ env.DATE }}"
+          "${HOME}/work/artha-data/scripts/update_db.sh ${{ env.DATE }}"
