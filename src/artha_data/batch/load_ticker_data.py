@@ -143,16 +143,19 @@ def load_data(con, load_date, datafile, exchange):
         raise ValueError(f"Warning: Could not decode JSON from {json_path}. Skipping.")
 
 
-def main():
+def main() -> int:
     """
     Main entry point for the data loading script.
 
     Parses command-line arguments for the load date, connects to the database,
     and iterates through the exchange data files to load them.
     """
+    rc = 0
+
     if len(sys.argv) < 2:
         print("Usage: python load_ticker_data.py YYYY-MM-DD")
-        sys.exit(1)
+        rc = 1
+        return rc
 
     try:
         load_date_str = sys.argv[1]
@@ -160,7 +163,8 @@ def main():
         datetime.strptime(load_date_str, "%Y-%m-%d")
     except ValueError:
         print("Invalid date format. Please use YYYY-MM-DD.")
-        sys.exit(1)
+        rc = 2
+        return rc
 
     con = duckdb.connect(database=DB_FILE, read_only=False)
 
@@ -181,7 +185,11 @@ def main():
         print(f"Successfully loaded data for date: {load_date_str}")
     except (duckdb.Error, ValueError):
         print(f"Data load was unsuccessful for date: {load_date_str}")
+        rc = -1
+
+    return rc
 
 
 if __name__ == "__main__":
-    main()
+    rc = main()
+    sys.exit(rc)

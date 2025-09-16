@@ -6,4 +6,5 @@
 # This will be called from a github actions workflow on a schedule.
 #
 python src/artha_data/batch/load_ticker_data.py $1
+echo "Exit status: $?"
 exit $?
