@@ -1,4 +1,4 @@
-name: Test workflow for debugging
+name: Update artha database with data from the datafiles for a given date
 
 # Controls when the action will run.
 on:
@@ -10,7 +10,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  fetch:
+  update-db:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,7 +18,8 @@ jobs:
       - uses: actions/checkout@v5
       # set the current date in environment to be used for appending to filenames in subsequent steps
       - name: current-date
-        run: echo "DATE='2025-09-10'" >> $GITHUB_ENV
+        #run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+        run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
       # Setup Python
       - name: Set up Python
@@ -27,15 +28,15 @@ jobs:
           python-version: '3.13'
 
       # Setup caching of the virtual environment directory
-      #- name: Cache virtual environment
-        #id: cache-venv
-        #uses: actions/cache@v4
-        #with:
-          #path: .venv
-          #key: ${{ runner.os }}-venv-${{ hashFiles('**/requirements*.txt') }} # Unique key for the cache
-          #restore-keys: |
-            #${{ runner.os }}-venv-
-            #${{ runner.os }}-
+      - name: Cache virtual environment
+        id: cache-venv
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: ${{ runner.os }}-venv-${{ hashFiles('**/requirements*.txt') }} # Unique key for the cache
+          restore-keys: |
+            ${{ runner.os }}-venv-
+            ${{ runner.os }}-
 
       # Create a virtual environment and activate it
       - name: Create and activate virtual environment
@@ -52,16 +53,7 @@ jobs:
       # Run database update script
       - name: execute-db-update
         run: |
-          echo "Github_workspace: $GITHUB_WORKSPACE"
-          echo "Gitub_env: $GITHUB_ENV"
-          echo "Home: $HOME"
-          ls -la $HOME/work/artha-data/*
-          tree -L 1
-          echo "Running test script from HOME/work/artha-data"
-          $HOME/work/artha-data/scripts/test-script.sh ${{ env.DATE }}
-          #echo "Running test script from HOME"
-          #$HOME/scripts/test-script.sh ${{ env.DATE }}
-          echo "$HOME/scripts/update_db.sh ${{ env.DATE }}"
           echo "Path: $PATH"
-          echo "env.path: ${{ env.PATH }}"
+          echo "env.PATH: ${{ env.PATH }}"
           which python
+          "${HOME}/work/artha-data/scripts/update_db.sh ${{ env.DATE }}"

@@ -1,4 +1,4 @@
-name: Update artha database with data from the datafiles for a given date
+name: Test workflow for debugging
 
 # Controls when the action will run.
 on:
@@ -10,39 +10,38 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  fetch:
+  test-env:
     runs-on: ubuntu-latest
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v4
       # set the current date in environment to be used for appending to filenames in subsequent steps
       - name: current-date
-        #run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
-        run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+        run: echo "DATE='2025-09-10'" >> $GITHUB_ENV
 
       # Setup Python
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
           python-version: '3.13'
 
       # Setup caching of the virtual environment directory
-      - name: Cache virtual environment
-        id: cache-venv
-        uses: actions/cache@v4
-        with:
-          path: .venv
-          key: ${{ runner.os }}-venv-${{ hashFiles('**/requirements*.txt') }} # Unique key for the cache
-          restore-keys: |
-            ${{ runner.os }}-venv-
-            ${{ runner.os }}-
+      #- name: Cache virtual environment
+        #id: cache-venv
+        #uses: actions/cache@v4
+        #with:
+          #path: .venv
+          #key: ${{ runner.os }}-venv-${{ hashFiles('**/requirements*.txt') }} # Unique key for the cache
+          #restore-keys: |
+            #${{ runner.os }}-venv-
+            #${{ runner.os }}-
 
       # Create a virtual environment and activate it
       - name: Create and activate virtual environment
         run: |
           python -m venv .venv
-          echo "PATH=${HOME}/.venv/bin:$PATH" >> $GITHUB_ENV
+          echo "PATH=${GITHUB_WORKSPACE}/.venv/bin:$PATH" >> $GITHUB_ENV
 
       # Install dependencies in the virtual environment, if cache miss
       - name: Install dependencies
@@ -53,7 +52,13 @@ jobs:
       # Run database update script
       - name: execute-db-update
         run: |
+          echo "Github_workspace: $GITHUB_WORKSPACE"
+          echo "Gitub_env: $GITHUB_ENV"
+          echo "Home: $HOME"
+          ls -la $GITHUB_WORKSPACE/*
+          echo "Running test script from $GITHUB_WORKSPACE"
+          $GITHUB_WORKSPACE/scripts/test-script.sh ${{ env.DATE }}
+          echo "$GITHUB_WORKSPACE/scripts/update_db.sh ${{ env.DATE }}"
           echo "Path: $PATH"
-          echo "env.PATH: ${{ env.PATH }}"
+          echo "env.path: ${{ env.PATH }}"
           which python
-          "${HOME}/work/artha-data/scripts/update_db.sh ${{ env.DATE }}"
