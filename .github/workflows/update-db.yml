@@ -42,7 +42,7 @@ jobs:
       - name: Create and activate virtual environment
         run: |
           python -m venv .venv
-          echo "PATH=${HOME}/.venv/bin:$PATH" >> $GITHUB_ENV
+          echo "PATH=${GITHUB_WORKSPACE}/.venv/bin:$PATH" >> $GITHUB_ENV
 
       # Install dependencies in the virtual environment, if cache miss
       - name: Install dependencies
@@ -56,4 +56,4 @@ jobs:
           echo "Path: $PATH"
           echo "env.PATH: ${{ env.PATH }}"
           which python
-          "${HOME}/work/artha-data/scripts/update_db.sh ${{ env.DATE }}"
+          "${GITHUB_WORKSPACE}/scripts/update_db.sh ${{ env.DATE }}"
