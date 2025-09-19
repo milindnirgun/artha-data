@@ -5,11 +5,13 @@ import duckdb
 
 # Construct a robust, absolute path to the database file.
 # This assumes the script is in 'src/artha-data' and the db is in 'data/' at the project root.
-_PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+_PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 _DB_DIR = os.path.join(_PROJECT_ROOT, "data")
 os.makedirs(_DB_DIR, exist_ok=True)  # Ensure the data directory exists
 DB_FILE = os.path.join(_DB_DIR, "artha.db")
-SCHEMA_DIR = os.path.join(os.path.dirname(__file__), "schemas")
+SCHEMA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "schemas")) # schemas is in src/artha_data
+
+#SCHEMA_DIR = os.path.join(os.path.dirname(__file__), "schemas")
 
 
 def table_exists(connection: duckdb.DuckDBPyConnection, table_name: str) -> bool:
