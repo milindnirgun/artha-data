@@ -51,20 +51,29 @@ def load_ticker_tape_data(con, load_date, data):
     """
     for item in data:
         try:
+            netchange = clean_value(item.get("netchange"), "real")
+            adv_dec = 0
+            if netchange is not None:
+                if netchange > 0:
+                    adv_dec = 1
+                elif netchange < 0:
+                    adv_dec = -1
+
             con.execute(
                 """
                 INSERT INTO ticker_tape (
-                    load_date, symbol, lastsale, netchange, pctchange, volume, marketCap, created_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
+                    load_date, symbol, lastsale, netchange, pctchange, volume, marketCap, adv_dec, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
                 """,
                 (
                     load_date,
                     item.get("symbol"),
                     clean_value(item.get("lastsale"), "real"),
-                    clean_value(item.get("netchange"), "real"),
+                    netchange,
                     clean_value(item.get("pctchange"), "real"),
                     clean_value(item.get("volume"), "integer"),
                     clean_value(item.get("marketCap"), "real"),
+                    adv_dec,
                 ),
             )
         except (duckdb.ConstraintException, duckdb.ConversionException, ValueError) as e:

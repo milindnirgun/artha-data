@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS ticker_tape (
     pctchange REAL,
     volume INTEGER,
     marketCap REAL,
+    adv_dec INTEGER,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (symbol, load_date),
