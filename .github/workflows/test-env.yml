@@ -52,10 +52,10 @@ jobs:
       # Run database update script
       - name: execute-db-update
         run: |
-          echo "Github_workspace: $GITHUB_WORKSPACE"
-          ls -la $GITHUB_WORKSPACE/*
-          echo "Directory listing of .venv/bin:"
-          ls -l .venv/bin/*
+          #echo "Github_workspace: $GITHUB_WORKSPACE"
+          #ls -la $GITHUB_WORKSPACE/*
+          echo "Directory listing of site-packages"
+          ls -l .venv/lib/python3.13/site-packages/*
           echo "Running test script from $GITHUB_WORKSPACE"
           $GITHUB_WORKSPACE/scripts/test-script.sh ${{ env.DATE }}
           echo "$GITHUB_WORKSPACE/scripts/update_db.sh ${{ env.DATE }}"
