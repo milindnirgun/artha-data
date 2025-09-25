@@ -53,9 +53,9 @@ jobs:
       - name: execute-db-update
         run: |
           echo "Github_workspace: $GITHUB_WORKSPACE"
-          echo "Gitub_env: $GITHUB_ENV"
-          echo "Home: $HOME"
           ls -la $GITHUB_WORKSPACE/*
+          echo "Directory listing of .venv/bin:"
+          ls -l .venv/bin/*
           echo "Running test script from $GITHUB_WORKSPACE"
           $GITHUB_WORKSPACE/scripts/test-script.sh ${{ env.DATE }}
           echo "$GITHUB_WORKSPACE/scripts/update_db.sh ${{ env.DATE }}"
