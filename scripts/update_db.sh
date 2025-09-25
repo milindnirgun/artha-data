@@ -9,8 +9,7 @@
 # datafile for that date into the artha.db database.
 # This will be called from a github actions workflow on a schedule.
 #
-PYTHON_PATH=$1
-echo "Running command: $PYTHON_PATH/python src/artha_data/batch/load_ticker_data.py $2"
-$PYTHON_PATH/python src/artha_data/batch/load_ticker_data.py $2
+echo "Running command: .venv/bin/python src/artha_data/batch/load_ticker_data.py $1"
+.venv/bin/python src/artha_data/batch/load_ticker_data.py $1
 echo "Exit status: $?"
 exit $?
