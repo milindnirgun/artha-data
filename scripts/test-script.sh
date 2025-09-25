@@ -1,5 +1,5 @@
 #!/bin/bash
 
 echo "Hello World! This is a test script. Today is $1"
-.venv/bin/python src/artha-data/batch/test-workflow.py
+.venv/bin/python src/artha_data/batch/test-workflow.py
 exit 0

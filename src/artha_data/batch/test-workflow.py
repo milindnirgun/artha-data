@@ -12,5 +12,9 @@ DB_FILE = os.path.join(_DB_DIR, "artha.db")
 
 
 con = duckdb.connect(database=DB_FILE, read_only=False)
-con.execute("show tables")
+result = con.execute("show tables").fetchall()
+if result is not None:
+    print(f"query returned {result}")
+else:
+    print("Query returned none")
 con.close()

@@ -57,7 +57,7 @@ jobs:
           echo "Directory listing of site-packages"
           ls -l .venv/lib/python3.13/site-packages/*
           echo "Running test program directly"
-          $GITHUB_WORKSPACE/.venv/bin/python $GITHUB_WORKSPACE/src/artha-data/batch/test-workflow.py
+          $GITHUB_WORKSPACE/.venv/bin/python $GITHUB_WORKSPACE/src/artha_data/batch/test-workflow.py
           echo "Running test script from $GITHUB_WORKSPACE"
           $GITHUB_WORKSPACE/scripts/test-script.sh ${{ env.DATE }}
           echo "$GITHUB_WORKSPACE/scripts/update_db.sh ${{ env.DATE }}"
