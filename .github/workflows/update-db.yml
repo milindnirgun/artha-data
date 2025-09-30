@@ -54,3 +54,14 @@ jobs:
       - name: execute-db-update
         run: |
           ${GITHUB_WORKSPACE}/scripts/update_db.sh ${{ env.DATE }}
+
+      # Commit database changes
+      - name: commit-changes
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add.
+          git commit -m "updated database with new data as of ${{ env.DATE }}"
+          git push
+
+
