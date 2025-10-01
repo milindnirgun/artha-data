@@ -52,6 +52,7 @@ class TestLoadTickerData(unittest.TestCase):
                 pctchange DOUBLE,
                 volume BIGINT,
                 marketCap DOUBLE,
+                adv_dec INTEGER,
                 created_at TIMESTAMP,
                 updated_at TIMESTAMP
             );
@@ -89,6 +90,7 @@ class TestLoadTickerData(unittest.TestCase):
         self.assertEqual(result[1], "AAPL")
         self.assertEqual(result[2], 150.00)
         self.assertEqual(result[5], 1000000)
+        self.assertEqual(result[7], 1) # adv_dec should be 1 for positive netchange
         # Load the same data again to thrown the unique constraint and test the exception
         # UPDATE - this did not work as expected. @FIXIT
         load_ticker_tape_data(self.con, "2025-09-09", self.sample_data)

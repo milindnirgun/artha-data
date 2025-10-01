@@ -1,0 +1,47 @@
+Screen {
+    background: $panel;
+    layout: vertical;
+    align: center middle;
+}
+
+Input, Select {
+  background: $panel;
+  width: 40%;
+  border: white 60% round;
+  margin: 1;
+}
+
+/* Default button look */
+Button {
+    background: $panel;
+    border: round;
+    width: 20%;
+    margin: 1;
+}
+
+/* Override default button for delete functionality with red */
+.red-button {
+    background: $panel;
+    border: solid red;
+    color: red;
+}
+
+.header {
+    dock: top;
+    content-align: center middle;
+    width: 100%;
+    border: white 60% round;
+    text-style: bold;
+}
+
+DataTable {
+    width: 80%;
+    height: 1fr;
+    margin: 1;
+}
+
+.input-box {
+  background: $panel;
+  border: white 40% round;
+}
+.row { height: auto; content-align: left middle; }
