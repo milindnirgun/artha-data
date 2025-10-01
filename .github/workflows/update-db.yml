@@ -48,9 +48,20 @@ jobs:
       - name: Install dependencies
         if: steps.cache-venv.outputs.cache-hit != 'true'
         run: |
-          pip install -r requirements.txt
+          .venv/bin/pip install -r requirements.txt
 
       # Run database update script
       - name: execute-db-update
         run: |
-          ${GITHUB_WORKSPACE}/scripts/update_db.sh ${GITHUB_WORKSPACE}/.venv/bin ${{ env.DATE }}
+          ${GITHUB_WORKSPACE}/scripts/update_db.sh ${{ env.DATE }}
+
+      # Commit database changes
+      - name: commit-changes
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "updated database with new data as of ${{ env.DATE }}"
+          git push
+
+

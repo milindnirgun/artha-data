@@ -47,15 +47,18 @@ jobs:
       - name: Install dependencies
         if: steps.cache-venv.outputs.cache-hit != 'true'
         run: |
-          pip install -r requirements.txt
+          .venv/bin/pip install -r requirements.txt
 
       # Run database update script
       - name: execute-db-update
         run: |
-          echo "Github_workspace: $GITHUB_WORKSPACE"
-          echo "Gitub_env: $GITHUB_ENV"
-          echo "Home: $HOME"
-          ls -la $GITHUB_WORKSPACE/*
+          #echo "Github_workspace: $GITHUB_WORKSPACE"
+          #ls -la $GITHUB_WORKSPACE/*
+          echo "Directory listing of site-packages"
+          ls -l .venv/lib/python3.13/site-packages/*
+          .venv/bin/pip list
+          echo "Running test program directly"
+          $GITHUB_WORKSPACE/.venv/bin/python $GITHUB_WORKSPACE/src/artha_data/batch/test-workflow.py
           echo "Running test script from $GITHUB_WORKSPACE"
           $GITHUB_WORKSPACE/scripts/test-script.sh ${{ env.DATE }}
           echo "$GITHUB_WORKSPACE/scripts/update_db.sh ${{ env.DATE }}"
