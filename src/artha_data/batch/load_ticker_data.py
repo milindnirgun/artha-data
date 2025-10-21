@@ -161,6 +161,7 @@ def main() -> int:
     """
     rc = 0
 
+    print(f"sys path: {sys.path}")
     if len(sys.argv) < 2:
         print("Usage: python load_ticker_data.py YYYY-MM-DD")
         rc = 1
