@@ -57,6 +57,7 @@ jobs:
         run: |
           #echo "Github_workspace: $GITHUB_WORKSPACE"
           #ls -la $GITHUB_WORKSPACE/*
+          source .venv/bin/activate
           pip list
           echo "Running test program directly"
           $GITHUB_WORKSPACE/.venv/bin/python $GITHUB_WORKSPACE/src/artha_data/batch/test-workflow.py
