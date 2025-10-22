@@ -40,7 +40,7 @@ def clean_value(value, value_type):
     return value
 
 
-def load_ticker_tape_data(con, load_date, data):
+def load_ticker_tape_data(con, load_date, data, exchange):
     """
     Loads time-sensitive ticker data into the ticker_tape table.
 
@@ -48,6 +48,7 @@ def load_ticker_tape_data(con, load_date, data):
         con: Active DuckDB connection.
         load_date: The specific date for which the data is being loaded.
         data: A list of dictionaries, where each dictionary is a stock's data.
+        exchange: The stock exchange name (e.g., 'NASDAQ').
     """
     for item in data:
         try:
@@ -62,8 +63,8 @@ def load_ticker_tape_data(con, load_date, data):
             con.execute(
                 """
                 INSERT INTO ticker_tape (
-                    load_date, symbol, lastsale, netchange, pctchange, volume, marketCap, adv_dec, created_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
+                    load_date, symbol, lastsale, netchange, pctchange, volume, marketCap, adv_dec, nd_industry, nd_sector, exchange, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
                 """,
                 (
                     load_date,
@@ -74,6 +75,9 @@ def load_ticker_tape_data(con, load_date, data):
                     clean_value(item.get("volume"), "integer"),
                     clean_value(item.get("marketCap"), "real"),
                     adv_dec,
+                    item.get("industry"),
+                    item.get("sector"),
+                    exchange,
                 ),
             )
         except (duckdb.ConstraintException, duckdb.ConversionException, ValueError) as e:
@@ -143,7 +147,7 @@ def load_data(con, load_date, datafile, exchange):
         load_stock_master_data(con, data, exchange)
 
         print(f"Loading ticker tape data from {os.path.basename(datafile)}...")
-        load_ticker_tape_data(con, load_date, data)
+        load_ticker_tape_data(con, load_date, data, exchange)
 
         con.commit()
     except FileNotFoundError:
