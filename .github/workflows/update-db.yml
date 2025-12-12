@@ -16,6 +16,13 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v5
+        with:
+          lfs: true
+
+      # Force checkout to explicitly using lfs to ensure the pointer files are replaced with the actual file content
+      - name: Checkout LFS objects
+        run: git lfs checkout
+
       # set the current date in environment to be used for appending to filenames in subsequent steps
       - name: current-date
         #run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
