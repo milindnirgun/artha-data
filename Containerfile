@@ -6,6 +6,8 @@ WORKDIR /workspace
 RUN apt-get update && apt-get install -y curl vi git git-lfs
 RUN git lfs install
 
+# Copy SSH Keys into container to enable pushing to git
+COPY ~/.ssh /root/
 
 # Install duckdb
 RUN curl https://install.duckdb.org | sh
