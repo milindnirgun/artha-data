@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    container_name: ${ENV:?Please provide an environment file}-artha
+    command: ["tail", "-f", "/dev/null"]
+    #ports:
+    #  - 8000:80
+    volumes:
+      - .:/workspace:z
+
