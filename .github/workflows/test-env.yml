@@ -15,8 +15,15 @@ jobs:
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
-      # set the current date in environment to be used for appending to filenames in subsequent steps
+      - uses: actions/checkout@v5
+        with:
+          lfs: true
+
+      # Force checkout to explicitly using lfs to ensure the pointer files are replaced with the actual file content
+      - name: Checkout LFS objects
+        run: git lfs checkout
+
+        # set the current date in environment to be used for appending to filenames in subsequent steps
       - name: current-date
         run: echo "DATE='2025-09-10'" >> $GITHUB_ENV
 
@@ -26,41 +33,19 @@ jobs:
         with:
           python-version: '3.13'
 
-      # Setup caching of the virtual environment directory
-      - name: Cache virtual environment
-        id: cache-venv
-        uses: actions/cache@v4
-        with:
-          path: .venv
-          key: ${{ runner.os }}-venv-${{ hashFiles('**/requirements*.txt') }} # Unique key for the cache
-          restore-keys: |
-            #${{ runner.os }}-venv-
-            #${{ runner.os }}-
-
-      # Create a virtual environment and activate it
-      - name: Create and activate virtual environment
-        if: steps.cache-venv.outputs.cache-hit != 'true' # Only create if cache misses
-        run: |
-          python -m venv .venv
-          source .venv/bin/activate
-          echo "PATH=${GITHUB_WORKSPACE}/.venv/bin:$PATH" >> $GITHUB_ENV
-
-      # Install dependencies in the virtual environment, if cache miss
+      # Install dependencies
       - name: Install dependencies
-        if: steps.cache-venv.outputs.cache-hit != 'true'
         run: |
-          source .venv/bin/activate
           pip install -r requirements.txt
 
-      # Run database update script
-      - name: execute-db-update
+      # Run test script
+      - name: execute-test
         run: |
           #echo "Github_workspace: $GITHUB_WORKSPACE"
           #ls -la $GITHUB_WORKSPACE/*
-          source .venv/bin/activate
           pip list
           echo "Running test program directly"
-          $GITHUB_WORKSPACE/.venv/bin/python $GITHUB_WORKSPACE/src/artha_data/batch/test-workflow.py
+          python $GITHUB_WORKSPACE/src/artha_data/batch/test-workflow.py
           echo "Running test script from $GITHUB_WORKSPACE"
           $GITHUB_WORKSPACE/scripts/test-script.sh ${{ env.DATE }}
           which python

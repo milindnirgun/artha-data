@@ -8,6 +8,7 @@ RUN git lfs install
 
 # Copy SSH Keys into container to enable pushing to git
 COPY ~/.ssh /root/
+COPY bashrc /root/.bashrc
 
 # Install duckdb
 RUN curl https://install.duckdb.org | sh
